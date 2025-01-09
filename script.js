@@ -1,69 +1,88 @@
-// Get the display element
 const display = document.getElementById('display');
+const buttons = document.querySelectorAll('.button');
 
-// Define the calculator functions
-function clearDisplay() {
-    display.value = '';
+let currentNumber = '';
+let previousNumber = '';
+let operator = '';
+let result = '';
+
+// Function to handle button clicks
+function handleButtonClick(value) {
+  if (value === 'C') {
+    clearCalculator();
+  } else if (value === '<') {
+    backspace();
+  } else if (value === '=') {
+    calculateResult();
+  } else if (['+', '-', '*', '/'].includes(value)) {
+    setOperator(value);
+  } else {
+    appendNumber(value);
+  }
 }
 
+// Function to clear the calculator
+function clearCalculator() {
+  currentNumber = '';
+  previousNumber = '';
+  operator = '';
+  result = '';
+  display.value = '';
+}
+
+// Function to handle backspace
 function backspace() {
-    display.value = display.value.slice(0, -1);
+  currentNumber = currentNumber.slice(0, -1);
+  display.value = currentNumber;
 }
 
-function calculate() {
-    try {
-        const result = eval(display.value);
-        display.value = result;
-    } catch (error) {
-        display.value = 'Error';
-    }
+// Function to calculate the result
+function calculateResult() {
+  if (previousNumber !== '' && operator !== '' && currentNumber !== '') {
+    result = eval(`${previousNumber} ${operator} ${currentNumber}`);
+    display.value = result;
+    previousNumber = result;
+    currentNumber = '';
+  }
 }
 
-// Add event listeners to the buttons
-document.querySelectorAll('.button').forEach(button => {
-    button.addEventListener('click', () => {
-        const id = button.id;
-        switch (id) {
-            case 'clear':
-                clearDisplay();
-                break;
-            case 'backspace':
-                backspace();
-                break;
-            case 'equals':
-                calculate();
-                break;
-            default:
-                display.value += button.textContent;
-        }
-    });
+// Function to set the operator
+function setOperator(value) {
+  operator = value;
+  previousNumber = currentNumber;
+  currentNumber = '';
+}
+
+// Function to append a number to the current number
+function appendNumber(value) {
+  currentNumber += value;
+  display.value = currentNumber;
+}
+
+// Add event listeners to buttons
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    const value = button.textContent;
+    handleButtonClick(value);
+  });
 });
 
-// Add keyboard support
+// Add event listener for keyboard input
 document.addEventListener('keydown', event => {
-    switch (event.key) {
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '.':
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-            display.value += event.key;
-            break;
-        case 'Enter':
-            calculate();
-            break;
-        case 'Backspace':
-            backspace();
-            break;
-    }
+  const key = event.key;
+
+  if (key === 'Backspace') {
+    backspace();
+  } else if (key === 'Enter') {
+    calculateResult();
+  } 
+  else if (['+', '-', '*', '/'].includes(key)) {
+    setOperator(key);
+  }else if(key==='Escape'){ 
+  clearCalculator();
+  }
+  
+  else if (key >= '0' && key <= '9' || key === '.') {
+    appendNumber(key);
+  }
 });

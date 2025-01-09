@@ -1,0 +1,6 @@
+Prepare Calculator By using Html,css and JS
+Allign Buttons in Proper Placement as same as Calculator and Button Sizes should be same,Add Background Colors for Buttons
+Make Sure that All Buttons to Work according to Functions
+Use Eval for calculation and Implement Keydown functionality to give input from keybord keys 
+
+
