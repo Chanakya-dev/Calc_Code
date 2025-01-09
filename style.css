@@ -1,7 +1,7 @@
 .calculator {
     width: 300px;
     margin: 50px auto;
-    background-color: #f0f0f0;
+    background-color: #232121;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -14,36 +14,46 @@
     margin-bottom: 20px;
     padding: 10px;
     font-size: 24px;
+    color: white;
     text-align: right;
     border: none;
-    border-radius: 10px;
-    background-color: #fff;
+    border-radius: 5px;
+    background-color: #1e2227;
 }
 
-.buttons {
+.grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
 }
 
-button {
+.button {
     height: 40px;
     padding: 10px;
     font-size: 18px;
     border: none;
-    border-radius: 10px;
-    background-color: #fff;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #ddd;
-}
-
-.operator {
+.button:hover {
     background-color: #ccc;
 }
 
-.operator:hover {
-    background-color: #aaa;
+.number {
+    background-color: #55f02a;
+}
+
+.operator {
+    background-color: #b0b0b0;
+}
+
+#clear, #backspace {
+    background-color: #ff9900;
+    color: #fff;
+}
+
+#equals {
+    background-color: #4CAF50;
+    color: #fff;
 }
