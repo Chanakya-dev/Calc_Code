@@ -6,6 +6,7 @@ class Calculator {
         this.previousNumber = '';
         this.operation = '';
         this.init();
+        this.keydown();
     }
 
     init() {
@@ -13,6 +14,45 @@ class Calculator {
             button.addEventListener('click', () => {
                 this.handleClick(button.textContent);
             });
+        });
+    }
+
+    keydown() {
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    this.handleClick(e.key);
+                    break;
+                case '.':
+                    this.handleClick('.');
+                    break;
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                    this.handleClick(e.key);
+                    break;
+                case '=':
+                case 'Enter':
+                    this.calculate();
+                    break;
+                case 'Backspace':
+                    this.backspace();
+                    break;
+                case 'c':
+                case 'C':
+                    this.clear();
+                    break;
+            }
         });
     }
 
@@ -52,7 +92,7 @@ class Calculator {
 
     calculate() {
         if (this.previousNumber !== '' && this.operation !== '') {
-            const result = this.calculateResult();
+            const result = eval(this.previousNumber + this.operation + this.currentNumber);
             this.display.value = result;
             this.previousNumber = result;
             this.currentNumber = '';
@@ -69,24 +109,6 @@ class Calculator {
     appendNumber(value) {
         this.currentNumber += value;
         this.display.value = this.currentNumber;
-    }
-
-    calculateResult() {
-        const num1 = parseFloat(this.previousNumber);
-        const num2 = parseFloat(this.currentNumber);
-
-        switch (this.operation) {
-            case '+':
-                return num1 + num2;
-            case '-':
-                return num1 - num2;
-            case '*':
-                return num1 * num2;
-            case '/':
-                return num1 / num2;
-            default:
-                return 0;
-        }
     }
 }
 
