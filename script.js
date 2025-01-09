@@ -48,8 +48,7 @@ class Calculator {
                 case 'Backspace':
                     this.backspace();
                     break;
-                case 'c':
-                case 'C':
+                case 'Escape':
                     this.clear();
                     break;
             }
