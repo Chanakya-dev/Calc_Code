@@ -1,55 +1,103 @@
 const display = document.getElementById('display');
 const buttons = document.querySelectorAll('.buttons button');
 
-let currentNumber = '';
-let previousNumber = '';
-let operation = '';
+let calculation = '';
+let lastOperator = '';
 
 buttons.forEach(button => {
-    button.addEventListener('click', () => {
-        const value = button.textContent;
-
-        if (value === 'C') {
-            currentNumber = '';
-            previousNumber = '';
-            operation = '';
-            display.value = '';
-        } else if (value === '<') {
-            currentNumber = currentNumber.slice(0, -1);
-            display.value = currentNumber;
-        } else if (value === '=') {
-            if (previousNumber !== '' && operation !== '') {
-                const result = calculate(previousNumber, currentNumber, operation);
-                display.value = result;
-                previousNumber = result;
-                currentNumber = '';
-                operation = '';
-            }
-        } else if (['+', '-', '*', '/'].includes(value)) {
-            operation = value;
-            previousNumber = currentNumber;
-            currentNumber = '';
+  button.addEventListener('click', () => {
+    const value = button.textContent;
+    switch (value) {
+      case 'C':
+        clearCalculation();
+        break;
+      case '&lt;':
+        backspace();
+        break;
+      case '=':
+        evaluateCalculation();
+        break;
+      default:
+        if (isOperator(value)) {
+          handleOperator(value);
         } else {
-            currentNumber += value;
-            display.value = currentNumber;
+          handleNumber(value);
         }
-    });
+    }
+  });
 });
 
-function calculate(num1, num2, operation) {
-    num1 = parseFloat(num1);
-    num2 = parseFloat(num2);
+document.addEventListener('keydown', event => {
+  const key = event.key;
+  switch (key) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '.':
+      handleNumber(key);
+      break;
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+      handleOperator(key);
+      break;
+    case 'Enter':
+      evaluateCalculation();
+      break;
+    case 'Backspace':
+      backspace();
+      break;
+    case 'c':
+    case 'C':
+      clearCalculation();
+      break;
+  }
+});
 
-    switch (operation) {
-        case '+':
-            return num1 + num2;
-        case '-':
-            return num1 - num2;
-        case '*':
-            return num1 * num2;
-        case '/':
-            return num1 / num2;
-        default:
-            return 0;
-    }
+function clearCalculation() {
+  calculation = '';
+  display.value = '';
+}
+
+function backspace() {
+  calculation = calculation.slice(0, -1);
+  display.value = calculation;
+}
+
+function evaluateCalculation() {
+  try {
+    const result = eval(calculation);
+    display.value = result;
+    calculation = result.toString();
+  } catch (error) {
+    display.value = 'Error';
+    calculation = '';
+  }
+}
+
+function handleOperator(operator) {
+  if (lastOperator) {
+    calculation += operator;
+  } else {
+    calculation += operator;
+    lastOperator = operator;
+  }
+  display.value = calculation;
+}
+
+function handleNumber(number) {
+  calculation += number;
+  display.value = calculation;
+}
+
+function isOperator(value) {
+  return ['+', '-', '*', '/'].includes(value);
 }
