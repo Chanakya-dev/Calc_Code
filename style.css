@@ -1,7 +1,6 @@
-.calculator {
+.calculator-box {
     width: 300px;
     margin: 50px auto;
-    background-color: #f0f0f0;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -20,7 +19,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.buttons {
+.button-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
@@ -36,17 +35,18 @@
     color: #fff;
     border: none;
     border-radius: 10px;
+    background-color: #f0f0f0;
     cursor: pointer;
 }
 
 .button:hover {
-    background-color: #3e8e41;
+    background-color: #e0e0e0;
 }
 
-#clear, #backspace {
-    background-color: #FF9800;
+#clear, #backspace, #equals {
+    background-color: #ccc;
 }
 
-#equals {
-    background-color: #03A9F4;
+#divide, #multiply, #subtract, #add {
+    background-color: #8bc34a;
 }
