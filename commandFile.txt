@@ -1,5 +1,0 @@
-Prepare an Actual Calculator By using Html,css and JS
-Allign Buttons in Proper Format 
-Add Background Colors for each type of  Buttons to Make them Look Effective
-Use Eval for calculation
-and Implement Keydown functionality to apply keyboard responsive 

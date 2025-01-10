@@ -1,103 +1,60 @@
 const display = document.getElementById('display');
-const buttons = document.querySelectorAll('.buttons button');
+const buttons = document.querySelectorAll('.button');
 
-let calculation = '';
-let lastOperator = '';
+let currentValue = '';
 
+// Function to handle button clicks
+function handleButtonClick(value) {
+  switch (value) {
+    case 'C':
+      currentValue = '';
+      display.value = '';
+      break;
+    case '←':
+      currentValue = currentValue.slice(0, -1);
+      display.value = currentValue;
+      break;
+    case '=':
+      try {
+        const result = eval(currentValue);
+        currentValue = result.toString();
+        display.value = currentValue;
+      } catch (error) {
+        display.value = 'Error';
+      }
+      break;
+    default:
+      currentValue += value;
+      display.value = currentValue;
+  }
+}
+
+// Add event listeners to buttons
 buttons.forEach(button => {
   button.addEventListener('click', () => {
-    const value = button.textContent;
-    switch (value) {
-      case 'C':
-        clearCalculation();
-        break;
-      case '&lt;':
-        backspace();
-        break;
-      case '=':
-        evaluateCalculation();
-        break;
-      default:
-        if (isOperator(value)) {
-          handleOperator(value);
-        } else {
-          handleNumber(value);
-        }
-    }
+    handleButtonClick(button.textContent);
   });
 });
 
+// Add event listener for keyboard input
 document.addEventListener('keydown', event => {
   const key = event.key;
-  switch (key) {
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case '.':
-      handleNumber(key);
-      break;
-    case '+':
-    case '-':
-    case '*':
-    case '/':
-      handleOperator(key);
-      break;
-    case 'Enter':
-      evaluateCalculation();
-      break;
-    case 'Backspace':
-      backspace();
-      break;
-    case 'c':
-    case 'C':
-      clearCalculation();
-      break;
+  if (key >= '0' && key <= '9' || key === '.' || key === '+' || key === '-' || key === '*' || key === '/') {
+    currentValue += key;
+    display.value = currentValue;
+  } else if (key === 'Enter' || key === '=') {
+    try {
+      const result = eval(currentValue);
+      currentValue = result.toString();
+      display.value = currentValue;
+    } catch (error) {
+      display.value = 'Error';
+    }
+  } else if (key === 'Backspace') {
+    currentValue = currentValue.slice(0, -1);
+    display.value = currentValue;
+  } else if (key === 'Escape') {
+    currentValue = '';
+    display.value = '';
   }
 });
-
-function clearCalculation() {
-  calculation = '';
-  display.value = '';
-}
-
-function backspace() {
-  calculation = calculation.slice(0, -1);
-  display.value = calculation;
-}
-
-function evaluateCalculation() {
-  try {
-    const result = eval(calculation);
-    display.value = result;
-    calculation = result.toString();
-  } catch (error) {
-    display.value = 'Error';
-    calculation = '';
-  }
-}
-
-function handleOperator(operator) {
-  if (lastOperator) {
-    calculation += operator;
-  } else {
-    calculation += operator;
-    lastOperator = operator;
-  }
-  display.value = calculation;
-}
-
-function handleNumber(number) {
-  calculation += number;
-  display.value = calculation;
-}
-
-function isOperator(value) {
-  return ['+', '-', '*', '/'].includes(value);
-}
